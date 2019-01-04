@@ -14,6 +14,12 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+//        val button = view.findViewById<Button>(R.id.navigate_destination_button)
+//        button?.setOnClickListener {
+//            findNavController().navigate(R.id.flow_step_one_dest)
+//        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
