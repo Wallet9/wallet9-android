@@ -1,10 +1,13 @@
-package io.wallet9
+package io.wallet9.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import io.wallet9.R
 
-class HomeFragment : Fragment() {
+class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -14,13 +17,12 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-//        val button = view.findViewById<Button>(R.id.navigate_destination_button)
-//        button?.setOnClickListener {
-//            findNavController().navigate(R.id.flow_step_one_dest)
-//        }
-
         super.onViewCreated(view, savedInstanceState)
+
+        val button = view.findViewById<Button>(R.id.button)
+        button?.setOnClickListener {
+            findNavController().navigate(R.id.dai_dest)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
