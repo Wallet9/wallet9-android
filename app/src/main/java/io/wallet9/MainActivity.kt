@@ -1,39 +1,74 @@
 package io.wallet9
 
+import android.content.res.Resources
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import com.google.android.material.navigation.NavigationView
 
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.navigation_activity.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.navigation_activity)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment ?: return
+
+        // action bar
+        val navController = host.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBar(navController, appBarConfiguration)
+        setupNavMenu(navController)
+        setupBottomNavMenu(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val dest: String = try {
+                resources.getResourceName(destination.id)
+            } catch (e: Resources.NotFoundException) {
+                Integer.toString(destination.id)
+            }
+
+            Toast.makeText(this@MainActivity, "Navigated to $dest", Toast.LENGTH_LONG).show()
+            Log.d("NavigationActivity", "Navigated to $dest")
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun setupBottomNavMenu(navController: NavController) {
+
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private fun setupNavMenu(navController: NavController) {
+    }
+
+    private fun setupActionBar(navController: NavController,
+                               appBarConfig: AppBarConfiguration) {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val _menu = super.onCreateOptionsMenu(menu)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        if (navView == null) {
+            menuInflater.inflate(R.menu.overflow_menu, menu)
+            return true
         }
+        return _menu
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 }
